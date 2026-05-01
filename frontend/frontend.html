@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Health Assistant</title>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+
+    input {
+      padding: 10px;
+      width: 300px;
+      border-radius: 8px;
+      border: none;
+      margin: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border: none;
+      background: #22c55e;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #16a34a;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 12px;
+      display: inline-block;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="root"></div>
+
+<script>
+  const { useState } = React;
+
+  function App() {
+    const [symptoms, setSymptoms] = useState("");
+    const [result, setResult] = useState("");
+
+    const handleSubmit = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            symptoms: symptoms.split(",")
+          })
+        });
+
+        const data = await res.json();
+        setResult(data.disease);
+      } catch (err) {
+        console.error(err);
+        setResult("Error connecting to backend");
+      }
+    };
+
+    return React.createElement("div", { className: "card" },
+      React.createElement("h1", null, "🧠 AI Health Assistant"),
+      React.createElement("p", null, "Enter symptoms (comma separated)"),
+      
+      React.createElement("input", {
+        placeholder: "fever, headache",
+        onChange: e => setSymptoms(e.target.value)
+      }),
+
+      React.createElement("br"),
+
+      React.createElement("button", { onClick: handleSubmit }, "Check Diagnosis"),
+
+      React.createElement("h2", null, result)
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+
+</body>
+</html>
