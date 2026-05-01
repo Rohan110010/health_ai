@@ -32,7 +32,7 @@ npm run dev
 ![Home](screenshots/home.png)
 
 ### 🔍 Prediction
-![Prediction](screenshots/prediction.png)
+![Predicition](screenshots/predicition.png)
 
 ### 📊 Graph
 ![Graph](screenshots/graph.png)
