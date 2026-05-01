@@ -26,12 +26,14 @@ uvicorn main:app --reload
 cd frontend
 npm install
 npm run dev
-
 ## 📸 Screenshots
+
 ### 🧠 Main UI
 ![Home](screenshots/home.png)
+
 ### 🔍 Prediction
 ![Prediction](screenshots/prediction.png)
+
 ### 📊 Graph
 ![Graph](screenshots/graph.png)
 
