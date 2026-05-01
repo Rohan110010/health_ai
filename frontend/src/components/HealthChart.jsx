@@ -4,35 +4,23 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts"
 export default function HealthChart({ refresh }) {
   const [data, setData] = useState([]);
 
-  // 🔥 Fetch history
   const fetchData = async () => {
-    try {
-      const res = await fetch("http://localhost:8000/history");
-      const json = await res.json();
+    const res = await fetch("http://127.0.0.1:8000/history");
+    const json = await res.json();
 
-      // ✅ Transform data for chart
-      const formatted = json.map((item, index) => ({
-        name: `Check ${index + 1}`,       // X-axis label
-        confidence: item.confidence,      // numeric value
-        disease: item.disease
-      }));
+    console.log("GRAPH DATA:", json); // 🔥 debug
 
-      setData(formatted);
-    } catch (err) {
-      console.error("Error fetching data:", err);
-    }
+    setData(json);
   };
 
   useEffect(() => {
     fetchData();
   }, [refresh]);
 
-  // 🔥 Reset graph
   const handleReset = async () => {
-    await fetch("http://localhost:8000/reset", {
+    await fetch("http://127.0.0.1:8000/reset", {
       method: "DELETE",
     });
-
     setData([]);
   };
 
@@ -40,18 +28,7 @@ export default function HealthChart({ refresh }) {
     <div>
       <h3>📊 Health Trend</h3>
 
-      <button
-        onClick={handleReset}
-        style={{
-          marginBottom: "10px",
-          padding: "8px",
-          borderRadius: "6px",
-          background: "#ef4444",
-          color: "white",
-          border: "none",
-          cursor: "pointer"
-        }}
-      >
+      <button onClick={handleReset}>
         Reset Graph
       </button>
 
@@ -65,7 +42,7 @@ export default function HealthChart({ refresh }) {
           <Tooltip />
           <Line
             type="monotone"
-            dataKey="confidence"
+            dataKey="confidence"   // 🔥 MUST BE THIS
             stroke="#3b82f6"
             strokeWidth={2}
           />
